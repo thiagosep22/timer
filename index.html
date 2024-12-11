@@ -12,14 +12,16 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
+            background-color: black; /* Fundo preto */
         }
         h1 {
             margin-bottom: 20px;
+            color: white; /* Título em branco */
         }
         #timer {
             font-size: 48px;
             font-weight: bold;
-            color: #333;
+            color: green; /* Inicialmente verde */
         }
     </style>
 </head>
@@ -37,6 +39,13 @@
 
             // Formatar o tempo para sempre ter dois dígitos
             timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Alterar a cor do texto do cronômetro
+            if (timeLeft > 120) { // Entre 02:01 e 05:00
+                timerElement.style.color = 'green';
+            } else if (timeLeft > 0) { // Entre 00:00 e 02:00
+                timerElement.style.color = 'red';
+            }
 
             if (timeLeft <= 0) {
                 clearInterval(countdown);
