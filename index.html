@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiempo de Charla</title>
+    <title>Tiempo de charla restante</title>
     <style>
         body {
             display: flex;
@@ -52,7 +52,7 @@
 
             if (timeLeft <= 0) {
                 clearInterval(countdown);
-                timerElement.innerHTML = "Tempo Esgotado!";
+                timerElement.innerHTML = "NO TIME LEFT!";
             }
             timeLeft--;
         }, 1000);
