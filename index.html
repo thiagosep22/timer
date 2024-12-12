@@ -25,37 +25,60 @@
             font-size: 36px; /* Tamanho do cronômetro ajustado */
             font-weight: bold;
             color: green; /* Inicialmente verde */
+            margin: 20px 0; /* Espaço acima e abaixo do cronômetro */
+        }
+        button {
+            padding: 10px 20px; /* Espaçamento interno do botão */
+            font-size: 18px; /* Tamanho da fonte do botão */
+            cursor: pointer; /* Muda o cursor ao passar sobre o botão */
+            background-color: #007bff; /* Cor de fundo do botão */
+            color: white; /* Cor do texto do botão */
+            border: none; /* Remove a borda do botão */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+        button:hover {
+            background-color: #0056b3; /* Cor do botão ao passar o mouse */
         }
     </style>
 </head>
 <body>
     <h1>Tiempo de Charla</h1>
     <div id="timer">05:30</div>
-    
+    <button onclick="iniciarBriefing()">Iniciar Briefing</button>
+
     <script>
-        let timeLeft = 300; // 5 minutos em segundos
+        let timeLeft = 300; // 5 minutos e 00 segundos em segundos
         const timerElement = document.getElementById('timer');
+        let countdown; // Variável para armazenar o intervalo
 
-        const countdown = setInterval(() => {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
+        function iniciarBriefing() {
+            clearInterval(countdown); // Limpa qualquer cronômetro anterior
 
-            // Formatar o tempo para sempre ter dois dígitos
-            timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            // Inicia a contagem regressiva
+            countdown = setInterval(() => {
+                if (timeLeft >= 0) {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
 
-            // Alterar a cor do texto do cronômetro
-            if (timeLeft > 120) { // Entre 02:01 e 05:30
-                timerElement.style.color = 'green';
-            } else if (timeLeft > 0) { // Entre 00:00 e 02:00
-                timerElement.style.color = 'red';
-            }
+                    // Formatar o tempo para sempre ter dois dígitos
+                    timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                timerElement.innerHTML = "Cerrar Briefing!";
-            }
-            timeLeft--;
-        }, 1000);
+                    // Alterar a cor do texto do cronômetro
+                    if (timeLeft > 120) { // Entre 02:01 e 05:00
+                        timerElement.style.color = 'green';
+                    } else if (timeLeft > 0) { // Entre 00:00 e 02:00
+                        timerElement.style.color = 'red';
+                    }
+
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        timerElement.innerHTML = "Cerrar Briefing!";
+                    }
+
+                    timeLeft--;
+                }
+            }, 1000);
+        }
     </script>
 </body>
 </html>
