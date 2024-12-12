@@ -30,7 +30,7 @@
 </head>
 <body>
     <h1>Tiempo de Charla</h1>
-    <div id="timer">05:00</div>
+    <div id="timer">05:30</div>
     
     <script>
         let timeLeft = 300; // 5 minutos em segundos
@@ -44,7 +44,7 @@
             timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
             // Alterar a cor do texto do cronômetro
-            if (timeLeft > 120) { // Entre 02:01 e 05:00
+            if (timeLeft > 120) { // Entre 02:01 e 05:30
                 timerElement.style.color = 'green';
             } else if (timeLeft > 0) { // Entre 00:00 e 02:00
                 timerElement.style.color = 'red';
