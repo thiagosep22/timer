@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiempo de charla restante</title>
+    <title>Tiempo de Charla</title>
     <style>
         body {
             display: flex;
@@ -24,60 +24,62 @@
         #timer {
             font-size: 36px; /* Tamanho do cronômetro ajustado */
             font-weight: bold;
-            color: green; /* Inicialmente verde */
-            margin: 20px 0; /* Espaço acima e abaixo do cronômetro */
+            color: #32CD32; /* Verde claro */
         }
-        button {
-            padding: 10px 20px; /* Espaçamento interno do botão */
-            font-size: 18px; /* Tamanho da fonte do botão */
-            cursor: pointer; /* Muda o cursor ao passar sobre o botão */
-            background-color: #007bff; /* Cor de fundo do botão */
-            color: white; /* Cor do texto do botão */
-            border: none; /* Remove a borda do botão */
-            border-radius: 5px; /* Bordas arredondadas */
-        }
-        button:hover {
-            background-color: #0056b3; /* Cor do botão ao passar o mouse */
+        #expired-message {
+            font-size: 36px; /* Tamanho da mensagem */
+            font-weight: bold;
+            color: red; /* Cor da mensagem quando o tempo acabar */
+            opacity: 0; /* Inicialmente invisível */
         }
     </style>
 </head>
 <body>
     <h1>Tiempo de Charla</h1>
     <div id="timer">05:30</div>
-    <button onclick="iniciarBriefing()">Iniciar Briefing</button>
-
+    <div id="expired-message">Tempo Esgotado!</div> 
+    
     <script>
-        let timeLeft = 300; // 5 minutos e 00 segundos em segundos
+        let timeLeft = 360; // 5 minutos em segundos
         const timerElement = document.getElementById('timer');
-        let countdown; // Variável para armazenar o intervalo
+        const expiredMessageElement = document.getElementById('expired-message');
 
-        function iniciarBriefing() {
-            clearInterval(countdown); // Limpa qualquer cronômetro anterior
+        const countdown = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
 
-            // Inicia a contagem regressiva
-            countdown = setInterval(() => {
-                if (timeLeft >= 0) {
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
+            // Formatar o tempo para sempre ter dois dígitos
+            timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-                    // Formatar o tempo para sempre ter dois dígitos
-                    timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            // Alterar a cor do texto do cronômetro
+            if (timeLeft > 120) { // Entre 02:01 e 05:00
+                timerElement.style.color = '#32CD32'; // Verde claro
+            } else if (timeLeft > 0) { // Entre 00:00 e 02:00
+                timerElement.style.color = 'red'; // Cor vermelha
+            }
 
-                    // Alterar a cor do texto do cronômetro
-                    if (timeLeft > 120) { // Entre 02:01 e 05:00
-                        timerElement.style.color = 'green';
-                    } else if (timeLeft > 0) { // Entre 00:00 e 02:00
-                        timerElement.style.color = 'red';
-                    }
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.style.display = 'none'; // Esconder o cronômetro
+                startBlinking(); // Iniciar o piscar da mensagem
+            }
+            timeLeft--;
+        }, 1000);
 
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        timerElement.innerHTML = "Cerrar Briefing!";
-                    }
+        function startBlinking() {
+            // Função para fazer a mensagem piscar
+            let isVisible = false;
 
-                    timeLeft--;
+            const blinkInterval = setInterval(() => {
+                isVisible = !isVisible; // Alternar visibilidade
+                expiredMessageElement.style.opacity = isVisible ? 1 : 0; // Alternar opacidade
+
+                // Parar o piscar após 5 segundos
+                if (timeLeft < -5) {
+                    clearInterval(blinkInterval);
+                    expiredMessageElement.style.opacity = 1; // Garantir que a mensagem esteja visível
                 }
-            }, 1000);
+            }, 500); // Alterar a opacidade a cada 500 ms
         }
     </script>
 </body>
