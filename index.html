@@ -32,39 +32,70 @@
             color: red; /* Cor da mensagem quando o tempo acabar */
             opacity: 0; /* Inicialmente invisível */
         }
+        button {
+            margin-top: 20px; /* Espaço acima dos botões */
+            padding: 10px 20px; /* Espessura do botão */
+            font-size: 16px; /* Tamanho da fonte do botão */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            border: none; /* Remove a borda padrão */
+            background-color: #32CD32; /* Cor de fundo dos botões */
+            color: white; /* Cor do texto dos botões */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+        button:hover {
+            background-color: #28a745; /* Cor de fundo ao passar o mouse */
+        }
     </style>
 </head>
 <body>
     <h1>Tiempo de Charla</h1>
-    <div id="timer">05:30</div>
+    <div id="timer">05:00</div>
     <div id="expired-message">Tempo Esgotado!</div> 
-    
+    <button id="start-button">Iniciar</button>
+    <button id="stop-button" disabled>Parar</button> <!-- O botão Parar começa desativado -->
+
     <script>
-        let timeLeft = 360; // 5 minutos em segundos
+        let timeLeft = 300; // 5 minutos em segundos
+        let countdown;
         const timerElement = document.getElementById('timer');
         const expiredMessageElement = document.getElementById('expired-message');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
 
-        const countdown = setInterval(() => {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
+        function startTimer() {
+            startButton.disabled = true;
+            stopButton.disabled = false;
 
-            // Formatar o tempo para sempre ter dois dígitos
-            timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            countdown = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
 
-            // Alterar a cor do texto do cronômetro
-            if (timeLeft > 120) { // Entre 02:01 e 05:00
-                timerElement.style.color = '#32CD32'; // Verde claro
-            } else if (timeLeft > 0) { // Entre 00:00 e 02:00
-                timerElement.style.color = 'red'; // Cor vermelha
-            }
+                // Formatar o tempo para sempre ter dois dígitos
+                timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                timerElement.style.display = 'none'; // Esconder o cronômetro
-                startBlinking(); // Iniciar o piscar da mensagem
-            }
-            timeLeft--;
-        }, 1000);
+                // Alterar a cor do texto do cronômetro
+                if (timeLeft > 120) { // Entre 02:01 e 05:00
+                    timerElement.style.color = '#32CD32'; // Verde claro
+                } else if (timeLeft > 0) { // Entre 00:00 e 02:00
+                    timerElement.style.color = 'red'; // Cor vermelha
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    timerElement.style.display = 'none'; // Esconder o cronômetro
+                    startBlinking(); // Iniciar o piscar da mensagem
+                    startButton.disabled = false; // Reabilitar o botão de Iniciar
+                    stopButton.disabled = true; // Desabilitar o botão de Parar
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(countdown);
+            startButton.disabled = false; // Reabilitar o botão de Iniciar
+            stopButton.disabled = true; // Desabilitar o botão de Parar
+        }
 
         function startBlinking() {
             // Função para fazer a mensagem piscar
@@ -81,6 +112,9 @@
                 }
             }, 500); // Alterar a opacidade a cada 500 ms
         }
+
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
     </script>
 </body>
 </html>
