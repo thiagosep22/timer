@@ -32,20 +32,40 @@
             color: red; /* Cor da mensagem quando o tempo acabar */
             opacity: 0; /* Inicialmente invisível */
         }
+        button {
+            margin-top: 20px; /* Espaço acima dos botões */
+            padding: 10px 20px; /* Espessura do botão */
+            font-size: 16px; /* Tamanho da fonte do botão */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            border: none; /* Remove a borda padrão */
+            background-color: #32CD32; /* Cor de fundo dos botões */
+            color: white; /* Cor do texto dos botões */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+        button:hover {
+            background-color: #28a745; /* Cor de fundo ao passar o mouse */
+        }
     </style>
 </head>
 <body>
     <h1>Tiempo de Charla</h1>
-    <div id="timer">05:00</div>
+    <div id="timer">05:30</div>
     <div id="expired-message">Tempo Esgotado!</div> 
+    <button id="start-button">Iniciar</button>
+    <button id="stop-button" disabled>Parar</button> <!-- O botão Parar começa desativado -->
 
     <script>
-        let timeLeft = 300; // 5 minutos em segundos
+        let timeLeft = 360; // 5 minutos em segundos
         let countdown;
         const timerElement = document.getElementById('timer');
         const expiredMessageElement = document.getElementById('expired-message');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
 
         function startTimer() {
+            startButton.disabled = true;
+            stopButton.disabled = false;
+
             countdown = setInterval(() => {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
@@ -64,9 +84,17 @@
                     clearInterval(countdown);
                     timerElement.style.display = 'none'; // Esconder o cronômetro
                     startBlinking(); // Iniciar o piscar da mensagem
+                    startButton.disabled = false; // Reabilitar o botão de Iniciar
+                    stopButton.disabled = true; // Desabilitar o botão de Parar
                 }
                 timeLeft--;
             }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(countdown);
+            startButton.disabled = false; // Reabilitar o botão de Iniciar
+            stopButton.disabled = true; // Desabilitar o botão de Parar
         }
 
         function startBlinking() {
@@ -85,8 +113,8 @@
             }, 500); // Alterar a opacidade a cada 500 ms
         }
 
-        // Iniciar o temporizador automaticamente ao carregar
-        window.onload = startTimer;
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
     </script>
 </body>
 </html>
