@@ -32,40 +32,23 @@
             color: red; /* Cor da mensagem quando o tempo acabar */
             opacity: 0; /* Inicialmente invisível */
         }
-        button {
-            margin-top: 20px; /* Espaço acima dos botões */
-            padding: 10px 20px; /* Espessura do botão */
-            font-size: 16px; /* Tamanho da fonte do botão */
-            cursor: pointer; /* Muda o cursor para indicar que é clicável */
-            border: none; /* Remove a borda padrão */
-            background-color: #32CD32; /* Cor de fundo dos botões */
-            color: white; /* Cor do texto dos botões */
-            border-radius: 5px; /* Bordas arredondadas */
-        }
-        button:hover {
-            background-color: #28a745; /* Cor de fundo ao passar o mouse */
-        }
+        /* Estilos de botão removidos */
     </style>
 </head>
 <body>
     <h1>Tiempo de Charla</h1>
-    <div id="timer">05:00</div> <!-- Exibir 5 minutos inicialmente -->
-    <div id="expired-message">Tempo Esgotado!</div> 
-    <button id="start-button">Iniciar</button>
-    <button id="stop-button" disabled>Parar</button> <!-- O botão Parar começa desativado -->
-
+    <div id="timer">05:00</div> <div id="expired-message">Tempo Esgotado!</div> 
+    
     <script>
         let timeLeft = 300; // 5 minutos em segundos
         let countdown;
         const timerElement = document.getElementById('timer');
         const expiredMessageElement = document.getElementById('expired-message');
-        const startButton = document.getElementById('start-button');
-        const stopButton = document.getElementById('stop-button');
+        // Variáveis dos botões removidas
 
         function startTimer() {
-            startButton.disabled = true; // Desabilita o botão Iniciar
-            stopButton.disabled = false; // Habilita o botão Parar
-
+            // Linhas que desabilitavam botões foram removidas
+            
             countdown = setInterval(() => {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
@@ -84,19 +67,14 @@
                     clearInterval(countdown);
                     timerElement.style.display = 'none'; // Esconder o cronômetro
                     startBlinking(); // Iniciar o piscar da mensagem
-                    startButton.disabled = false; // Reabilitar o botão de Iniciar
-                    stopButton.disabled = true; // Desabilitar o botão de Parar
+                    // Linhas que reabilitavam botões foram removidas
                 }
                 
                 timeLeft--; // Decrementar o tempo restante
             }, 1000); // Atualizar a cada segundo
         }
 
-        function stopTimer() {
-            clearInterval(countdown); // Para a contagem
-            startButton.disabled = false; // Reabilita o botão de Iniciar
-            stopButton.disabled = true; // Desabilita o botão de Parar
-        }
+        // Função stopTimer removida, pois não há botão "Parar"
 
         function startBlinking() {
             // Função para fazer a mensagem piscar
@@ -105,17 +83,19 @@
             const blinkInterval = setInterval(() => {
                 isVisible = !isVisible; // Alternar visibilidade
                 expiredMessageElement.style.opacity = isVisible ? 1 : 0; // Alternar opacidade
-
-                // Parar o piscar após 5 segundos
-                if (timeLeft < -5) {
-                    clearInterval(blinkInterval);
-                    expiredMessageElement.style.opacity = 1; // Garantir que a mensagem esteja visível
-                }
             }, 500); // Alterar a opacidade a cada 500 ms
+
+            // Parar o piscar após 5 segundos
+            setTimeout(() => {
+                clearInterval(blinkInterval);
+                expiredMessageElement.style.opacity = 1; // Garantir que a mensagem esteja visível
+            }, 5000); // 5000 ms = 5 segundos
         }
 
-        startButton.addEventListener('click', startTimer); // Ao clicar, iniciar o temporizador
-        stopButton.addEventListener('click', stopTimer); // Ao clicar, parar o temporizador
+        // Event Listeners dos botões removidos
+        
+        startTimer(); // Inicia o timer automaticamente quando a página carrega
+
     </script>
 </body>
 </html>
